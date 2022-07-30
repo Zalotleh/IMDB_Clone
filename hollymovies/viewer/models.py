@@ -33,7 +33,7 @@ class Movie(models.Model):
     trailer_link = models.URLField(null=True, blank=True)
     genre = models.CharField(max_length=30, null=True, blank=True)
     country_of_origin = models.CharField(max_length=30, choices=COUNTRIES_CHOICES, default="US")
-    actors = models.ManyToManyField(Actor)
+    actors = models.ManyToManyField(Actor, null=True)
 
     def __str__(self):
         return self.title

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Movie
+from django.views.generic import ListView, CreateView, DetailView
 
 movies_database = {
     'topgun': 'Top Gun is awesome',
@@ -29,9 +30,40 @@ def movies(request, s):
         return HttpResponse('movie not found')
 
 
-def database_movies(request):
+# def database_movies(request):
+#     movies_data = Movie.objects.all()
+#     context = {
+#         'movies_data': movies_data
+#     }
+#     return render(request, 'movies.html', context=context)
+
+
+def about(request):
     movies_data = Movie.objects.all()
+    total_movies = movies_data.count()
     context = {
-        'movies_data': movies_data
+        'total_movies': total_movies
     }
-    return render(request, 'movies.html', context=context)
+    return render(request, 'about.html', context=context)
+
+
+# I left the above functions to compare them with the class based views CBV
+
+class ListMovies(ListView):
+    template_name = 'movies.html'
+    model = Movie
+    context_object_name = 'movies_data'
+
+
+class CreateMovie(CreateView):
+    template_name = 'create_movie.html'
+    model = Movie
+    success_url = '/'
+    fields = '__all__'
+
+
+class DetailMovie(DetailView):
+    template_name = 'detail_movie.html'
+    model = Movie
+    context_object_name = 'movie'
+

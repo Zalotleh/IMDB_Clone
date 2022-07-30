@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from viewer.views import hello, movies, database_movies
+from viewer.views import hello, movies, ListMovies, about, CreateMovie,DetailMovie
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
     path('movies/<s>', movies),
-    path('', database_movies)  # make it our home page
+    path('', ListMovies.as_view()),  # make it our home page
+    path('about/', about),
+    path('create_movie/', CreateMovie.as_view()),
+    path('title/<int:pk>',DetailMovie.as_view()),
 
 ]
