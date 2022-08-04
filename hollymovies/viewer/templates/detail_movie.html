@@ -11,9 +11,16 @@
 <p>{{movie.langauge}}</p>
 <p>{{movie.description}}</p>
 <p>{{movie.director}}</p>
-<p>Country of Origin: {{movie.country_of_origin}}</p>
-<p>Stars: {{movie.actors}}</p>
+<p>Country of Origin: {{country_name}}</p>
+<p>Stars:
+{%for actor in movie.actors.all%}
+{{actor}} ;
+{%endfor%}
+</p>
 
+<a href="{% url 'update_movie' movie.id%}">Update Movie</a>
+<br>
 
+<a href="{% url 'delete_movie' movie.id%}">Delete Movie</a>
 
 {%endblock%}

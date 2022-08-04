@@ -3,10 +3,11 @@
 {%block content%}
         <ul>
           {%for m in movies_data%}
-          <li>{{m.title}}-{{m.release_year}} - {{m.average_rating}}- {{m.director}} - {{m.duration}} -  {{m.language}} - {{m.trailer_link}} - {{m.genre}} - {{m.country_of_origin}}</li>
+          <li><a href="{% url 'detail_movie' m.id %}"> {{m.title}}</a> - {{m.release_year}} - {{m.average_rating}}- {{m.director}} - {{m.duration}} -  {{m.language}} - {{m.trailer_link}} - {{m.genre}} - {{m.country_of_origin}}</li>
           {%endfor%}
         </ul>
 
 <br>
-<a href='create_movie/'>Create a Movie</a>
+<a href="{% url 'create_movie' %}">Create Movie</a>
+
 {%endblock%}

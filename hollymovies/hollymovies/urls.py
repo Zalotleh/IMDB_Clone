@@ -15,15 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from viewer.views import hello, movies, ListMovies, about, CreateMovie,DetailMovie
+from viewer.views import (hello,
+                          movies,
+                          ListMovies,
+                          about,
+                          CreateMovie,
+                          DetailMovie,
+                          UpdateMovie,
+                          DeleteMovie)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello/', hello),
-    path('movies/<s>', movies),
-    path('', ListMovies.as_view()),  # make it our home page
-    path('about/', about),
-    path('create_movie/', CreateMovie.as_view()),
-    path('title/<int:pk>',DetailMovie.as_view()),
+    path('hello/', hello, name='hello_page'),
+    path('movies/<s>', movies, name='movies_page'),
+    path('', ListMovies.as_view(), name='home_page'),  # make it our home page
+    path('about/', about, name='about'),
+    path('create_movie/', CreateMovie.as_view(), name='create_movie'),
+    path('title/<int:pk>', DetailMovie.as_view(), name='detail_movie'),
+    path('title/<int:pk>/update', UpdateMovie.as_view(), name='update_movie'),
+    path('title/<int:pk>/delete', DeleteMovie.as_view(), name='delete_movie')
 
 ]
