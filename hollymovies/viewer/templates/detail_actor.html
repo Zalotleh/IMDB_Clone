@@ -1,0 +1,16 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+<p><h1>{{actor.name}}</h1></p>
+<p>Date Of Birth {{actor.date_of_birth}}</p>
+<p>BIO {{actor.bio}}</p>
+<p>Country of Birth: {{country_name}}</p>
+
+
+<a href="{% url 'update_actor' actor.id%}">Update Actor</a>
+<br>
+
+<a href="{% url 'delete_actor' actor.id%}">Delete Actor</a>
+
+{%endblock%}

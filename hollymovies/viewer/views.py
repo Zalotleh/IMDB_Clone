@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Movie
+from .models import Movie, Actor, Director
 from django.views.generic import (ListView,
                                   CreateView,
                                   DetailView,
@@ -82,7 +82,7 @@ class CreateMovie(CreateView):
 class UpdateMovie(UpdateView):
     template_name = 'update_movie.html'
     model = Movie
-    success_url = reverse_lazy('detail_movie')
+    success_url = reverse_lazy('home_page')
     fields = '__all__'
 
 
@@ -90,6 +90,12 @@ class DeleteMovie(DeleteView):
     template_name = 'delete_movie.html'
     model = Movie
     success_url = reverse_lazy('home_page')
+    context_object_name = 'movie'
+
+
+class DetailMovie(DetailView):
+    template_name = 'detail_movie.html'
+    model = Movie
     context_object_name = 'movie'
 
     def get_context_data(self, **kwargs):
@@ -103,7 +109,46 @@ class DeleteMovie(DeleteView):
         return context
 
 
-class DetailMovie(DetailView):
-    template_name = 'detail_movie.html'
-    model = Movie
-    context_object_name = 'movie'
+# Below is the CRUD Operations for Actor model:
+
+class ListActor(ListView):
+    template_name = 'actors.html'
+    model = Actor
+    context_object_name = 'actor_data'
+
+
+class CreateActor(CreateView):
+    template_name = 'create_actor.html'
+    model = Actor
+    success_url = '/'
+    fields = '__all__'
+
+
+class UpdateActor(UpdateView):
+    template_name = 'update_actor.html'
+    model = Actor
+    success_url = reverse_lazy('actors_list')
+    fields = '__all__'
+
+
+class DeleteActor(DeleteView):
+    template_name = 'delete_actor.html'
+    model = Actor
+    success_url = reverse_lazy('actors_list')
+    context_object_name = 'actor'
+
+
+class DetailActor(DetailView):
+    template_name = 'detail_actor.html'
+    model = Actor
+    context_object_name = 'actor'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        country_code = context['actor'].country_of_birth
+        country_name = get_country_name(country_code)
+
+        context['country_name'] = country_name
+
+        return context

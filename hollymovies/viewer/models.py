@@ -14,7 +14,7 @@ class Director(models.Model):
 
 class Actor(models.Model):
     name = models.CharField(max_length=100)
-    date_of_brith = models.DateField()
+    date_of_birth = models.DateField()
     bio = models.TextField()
     country_of_birth = models.CharField(max_length=30, choices=COUNTRIES_CHOICES, default='US')
 

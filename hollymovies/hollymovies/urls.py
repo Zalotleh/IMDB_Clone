@@ -22,17 +22,27 @@ from viewer.views import (hello,
                           CreateMovie,
                           DetailMovie,
                           UpdateMovie,
-                          DeleteMovie)
+                          DeleteMovie,
+                          ListActor,
+                          CreateActor,
+                          DetailActor,
+                          UpdateActor,
+                          DeleteActor, )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello, name='hello_page'),
     path('movies/<s>', movies, name='movies_page'),
-    path('', ListMovies.as_view(), name='home_page'),  # make it our home page
     path('about/', about, name='about'),
-    path('create_movie/', CreateMovie.as_view(), name='create_movie'),
-    path('title/<int:pk>', DetailMovie.as_view(), name='detail_movie'),
-    path('title/<int:pk>/update', UpdateMovie.as_view(), name='update_movie'),
-    path('title/<int:pk>/delete', DeleteMovie.as_view(), name='delete_movie')
 
+    path('', ListMovies.as_view(), name='home_page'),  # make it our home page
+    path('title/<int:pk>', DetailMovie.as_view(), name='detail_movie'),
+    path('create_movie/', CreateMovie.as_view(), name='create_movie'),
+    path('title/<int:pk>/update', UpdateMovie.as_view(), name='update_movie'),
+    path('title/<int:pk>/delete', DeleteMovie.as_view(), name='delete_movie'),
+    path('actors_list/', ListActor.as_view(), name='actors_list'),
+    path('name/<int:pk>', DetailActor.as_view(), name='detail_actor'),
+    path('create_actor/', CreateActor.as_view(), name='create_actor'),
+    path('name/<int:pk>/update', UpdateActor.as_view(), name='update_actor'),
+    path('name/<int:pk>/delete', DeleteActor.as_view(), name='delete_actor'),
 ]
