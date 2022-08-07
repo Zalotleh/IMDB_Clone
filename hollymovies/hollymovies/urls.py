@@ -27,7 +27,12 @@ from viewer.views import (hello,
                           CreateActor,
                           DetailActor,
                           UpdateActor,
-                          DeleteActor, )
+                          DeleteActor,
+                          ListDirector,
+                          DetailDirector,
+                          CreateDirector,
+                          DeleteDirector,
+                          UpdateDirector)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -45,4 +50,9 @@ urlpatterns = [
     path('create_actor/', CreateActor.as_view(), name='create_actor'),
     path('name/<int:pk>/update', UpdateActor.as_view(), name='update_actor'),
     path('name/<int:pk>/delete', DeleteActor.as_view(), name='delete_actor'),
+    path('director_list/', ListDirector.as_view(), name='directors_list'),
+    path('name/<int:pk>', DetailDirector.as_view(), name='detail_director'),
+    path('create_director/', CreateDirector.as_view(), name='create_director'),
+    path('name/<int:pk>/update', UpdateDirector.as_view(), name='update_director'),
+    path('name/<int:pk>/delete', DeleteDirector.as_view(), name='delete_director'),
 ]

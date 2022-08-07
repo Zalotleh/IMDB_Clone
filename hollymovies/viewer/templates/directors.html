@@ -1,0 +1,13 @@
+{%extends 'base.html'%}
+
+{%block content%}
+        <ul>
+          {%for a in director_data%}
+            <li> <a href="{% url 'detail_director' a.pk %}">{{a.name}}</a> Date of Birth: {{a.date_of_birth}} - {{a.country_of_birth}} <br>{{a.bio}}</li>
+          {%endfor%}
+        </ul>
+
+<br>
+<a href="{% url 'create_director' %}">Create Director</a>
+
+{%endblock%}

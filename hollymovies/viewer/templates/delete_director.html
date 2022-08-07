@@ -1,0 +1,11 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
+Are you sure you want to delete the Actor {{director.name}} ?
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete Director">
+</form>
+
+{%endblock%}

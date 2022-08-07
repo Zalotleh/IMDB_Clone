@@ -148,7 +148,50 @@ class DetailActor(DetailView):
 
         country_code = context['actor'].country_of_birth
         country_name = get_country_name(country_code)
+        context['country_name'] = country_name
 
+        return context
+
+
+# Below is the CRUD Operations for Director model:
+
+class ListDirector(ListView):
+    template_name = 'directors.html'
+    model = Director
+    context_object_name = 'director_data'
+
+
+class CreateDirector(CreateView):
+    template_name = 'create_director.html'
+    model = Director
+    success_url = '/'
+    fields = '__all__'
+
+
+class UpdateDirector(UpdateView):
+    template_name = 'update_director.html'
+    model = Actor
+    success_url = reverse_lazy('directors_list')
+    fields = '__all__'
+
+
+class DeleteDirector(DeleteView):
+    template_name = 'delete_director.html'
+    model = Director
+    success_url = reverse_lazy('directors_list')
+    context_object_name = 'director'
+
+
+class DetailDirector(DetailView):
+    template_name = 'detail_director.html'
+    model = Director
+    context_object_name = 'director'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        country_code = context['director'].country_of_birth
+        country_name = get_country_name(country_code)
         context['country_name'] = country_name
 
         return context

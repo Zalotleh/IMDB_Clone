@@ -8,9 +8,13 @@
 <p>Country of Birth: {{country_name}}</p>
 
 
+
 <a href="{% url 'update_actor' actor.id%}">Update Actor</a>
 <br>
+<a href="{% url 'delete_actor' actor.id %}">Delete Actor</a>
 
-<a href="{% url 'delete_actor' actor.id%}">Delete Actor</a>
+
+
+
 
 {%endblock%}
