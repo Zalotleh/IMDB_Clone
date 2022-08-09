@@ -1,15 +1,18 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Movie, Actor, Director
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from .forms import ContactForm
 from django.views.generic import (ListView,
                                   CreateView,
                                   DetailView,
                                   UpdateView,
                                   DeleteView,
+                                  TemplateView,
+                                  FormView
                                   )
 
-from django.urls import reverse_lazy
 from .constants import COUNTRIES_CHOICES
+from .models import Movie, Actor, Director
 
 movies_database = {
     'topgun': 'Top Gun is awesome',
@@ -82,8 +85,14 @@ class CreateMovie(CreateView):
 class UpdateMovie(UpdateView):
     template_name = 'update_movie.html'
     model = Movie
-    success_url = reverse_lazy('home_page')
+    # success_url = reverse_lazy('home_page')
     fields = '__all__'
+
+    # after updating the user will go back to the detail_movie page instead of home_page.
+    def get_success_url(self):
+        movie_pk = self.kwargs['pk']
+        url = reverse_lazy('detail_movie', kwargs={'pk': movie_pk})
+        return url
 
 
 class DeleteMovie(DeleteView):
@@ -127,8 +136,14 @@ class CreateActor(CreateView):
 class UpdateActor(UpdateView):
     template_name = 'update_actor.html'
     model = Actor
-    success_url = reverse_lazy('actors_list')
+    # success_url = reverse_lazy('actors_list')
     fields = '__all__'
+
+    # after updating the user will go back to the detail_actor page instead of actor_list.
+    def get_success_url(self):
+        actor_pk = self.kwargs['pk']
+        url = reverse_lazy('detail_actor', kwargs={'pk': actor_pk})
+        return url
 
 
 class DeleteActor(DeleteView):
@@ -171,8 +186,14 @@ class CreateDirector(CreateView):
 class UpdateDirector(UpdateView):
     template_name = 'update_director.html'
     model = Actor
-    success_url = reverse_lazy('directors_list')
+    # success_url = reverse_lazy('directors_list')
     fields = '__all__'
+
+    # after updating the user will go back to the detail_movie page instead of director_list.
+    def get_success_url(self):
+        director_pk = self.kwargs['pk']
+        url = reverse_lazy('detail_director', kwargs={'pk': director_pk})
+        return url
 
 
 class DeleteDirector(DeleteView):
@@ -195,3 +216,21 @@ class DetailDirector(DetailView):
         context['country_name'] = country_name
 
         return context
+
+
+# class ContactPage(TemplateView):
+#     template_name = 'contact.html'
+
+
+class ContactPage(FormView):
+    template_name = 'contact.html'
+    form_class = ContactForm
+    success_url = reverse_lazy('home_page')
+
+    def form_valid(self, form):
+        print('I received your contact')
+        print(form.cleaned_data)
+        # the form parameter has all the data we receive from the users, from here we can
+        # manipulate it
+        # for ex, if we want to send an email response, save some data in db, send telegram message, sms
+        return super().form_valid(form)

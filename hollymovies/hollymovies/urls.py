@@ -32,7 +32,9 @@ from viewer.views import (hello,
                           DetailDirector,
                           CreateDirector,
                           DeleteDirector,
-                          UpdateDirector)
+                          UpdateDirector,
+                          ContactPage
+                          )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -55,4 +57,5 @@ urlpatterns = [
     path('create_director/', CreateDirector.as_view(), name='create_director'),
     path('name/<int:pk>/update', UpdateDirector.as_view(), name='update_director'),
     path('name/<int:pk>/delete', DeleteDirector.as_view(), name='delete_director'),
+    path('contact/', ContactPage.as_view(), name='contact')
 ]
