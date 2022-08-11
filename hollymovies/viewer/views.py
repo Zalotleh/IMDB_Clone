@@ -13,6 +13,8 @@ from django.views.generic import (ListView,
 
 from .constants import COUNTRIES_CHOICES
 from .models import Movie, Actor, Director
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db.models import Q
 
 movies_database = {
     'topgun': 'Top Gun is awesome',
@@ -74,19 +76,54 @@ class ListMovies(ListView):
     model = Movie
     context_object_name = 'movies_data'
 
+    def get_queryset(self):
+        movies = Movie.objects.all()
+        """movies = movies.filter(title='Top Gun') # this will show us only top gun movie in the movie list page 
+        movies = movies.filter(title_contains='Thor') #this will show movies with thor word in its title in movie 
+        list page"""
+        # we want to use the user input for searching, so we use the:
 
-class CreateMovie(CreateView):
+        search = self.request.GET.get('search')
+        # movies = movies.filter(title__contains=search)
+
+        """
+        to test this in the movie list, at address bar we add ?search=Thor
+        if we visit e the list movie page we will get error (Cannot use None as a query value
+        ), so to solve this
+        """
+        # if search is not None:
+        #     movies = movies.filter(title__contains=search)
+        # return movies
+        """
+        if we want to search for all movies details not only the title:
+        we need to use django filtering functionality
+        """
+        if search is not None:
+            movies = movies.filter(Q(title__contains=search)
+                                   | Q(description__contains=search)
+                                   | Q(director__name__contains=search)
+                                   # whenever we have dynamic field with foreign key we use the __ the director itself
+                                   # is a model,and we want to go inside this model using the __ and search for the name
+                                   | Q(director__bio__contains=search)
+                                   )
+        movies = movies.order_by('-release_year')
+        return movies
+
+
+class CreateMovie(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'create_movie.html'
     model = Movie
     success_url = '/'
     fields = '__all__'
+    permission_required = 'viewer.add_movie'
 
 
-class UpdateMovie(UpdateView):
+class UpdateMovie(PermissionRequiredMixin, UpdateView):
     template_name = 'update_movie.html'
     model = Movie
     # success_url = reverse_lazy('home_page')
     fields = '__all__'
+    permission_required = 'viewer.change_movie'
 
     # after updating the user will go back to the detail_movie page instead of home_page.
     def get_success_url(self):
@@ -95,11 +132,12 @@ class UpdateMovie(UpdateView):
         return url
 
 
-class DeleteMovie(DeleteView):
+class DeleteMovie(PermissionRequiredMixin, DeleteView):
     template_name = 'delete_movie.html'
     model = Movie
     success_url = reverse_lazy('home_page')
     context_object_name = 'movie'
+    permission_required = 'viewer.delete_movie'
 
 
 class DetailMovie(DetailView):
@@ -126,18 +164,20 @@ class ListActor(ListView):
     context_object_name = 'actor_data'
 
 
-class CreateActor(CreateView):
+class CreateActor(PermissionRequiredMixin, CreateView):
     template_name = 'create_actor.html'
     model = Actor
     success_url = '/'
     fields = '__all__'
+    permission_required = 'viewer.add_actor'
 
 
-class UpdateActor(UpdateView):
+class UpdateActor(PermissionRequiredMixin, UpdateView):
     template_name = 'update_actor.html'
     model = Actor
     # success_url = reverse_lazy('actors_list')
     fields = '__all__'
+    permission_required = 'viewer.change_actor'
 
     # after updating the user will go back to the detail_actor page instead of actor_list.
     def get_success_url(self):
@@ -146,11 +186,12 @@ class UpdateActor(UpdateView):
         return url
 
 
-class DeleteActor(DeleteView):
+class DeleteActor(PermissionRequiredMixin, DeleteView):
     template_name = 'delete_actor.html'
     model = Actor
     success_url = reverse_lazy('actors_list')
     context_object_name = 'actor'
+    permission_required = 'viewer.delete_actor'
 
 
 class DetailActor(DetailView):
@@ -176,18 +217,20 @@ class ListDirector(ListView):
     context_object_name = 'director_data'
 
 
-class CreateDirector(CreateView):
+class CreateDirector(PermissionRequiredMixin, CreateView):
     template_name = 'create_director.html'
     model = Director
     success_url = '/'
     fields = '__all__'
+    permission_required = 'viewer.add_director'
 
 
-class UpdateDirector(UpdateView):
+class UpdateDirector(PermissionRequiredMixin, UpdateView):
     template_name = 'update_director.html'
     model = Actor
     # success_url = reverse_lazy('directors_list')
     fields = '__all__'
+    permission_required = 'viewer.change_director'
 
     # after updating the user will go back to the detail_movie page instead of director_list.
     def get_success_url(self):
@@ -196,11 +239,12 @@ class UpdateDirector(UpdateView):
         return url
 
 
-class DeleteDirector(DeleteView):
+class DeleteDirector(PermissionRequiredMixin, DeleteView):
     template_name = 'delete_director.html'
     model = Director
     success_url = reverse_lazy('directors_list')
     context_object_name = 'director'
+    permission_required = 'viewer.delete_director'
 
 
 class DetailDirector(DetailView):
