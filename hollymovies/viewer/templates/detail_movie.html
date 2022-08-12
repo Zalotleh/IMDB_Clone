@@ -2,8 +2,18 @@
 
 {%block content%}
 
+
+
+
 <p><h1>{{movie.title}}</h1></p>
 <p>{{movie.release_year}}</p>
+
+{% if movie.image %}
+   <img src="{{movie.image.url}}" height="400" width="auto">
+{% else %}
+   <img src="https://dummyimage.com/200x300/000/fff&text=NO+IMAGE", height="500" width="auto">
+{% endif %}
+
 <p>Director {{movie.duration}}</p>
 <p>Rating: {{movie.average_rating}}</p>
 <p>{{movie.trailer_link}}</p>

@@ -1,18 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from .forms import ContactForm
+from .forms import ContactForm, SignUpForm
 from django.views.generic import (ListView,
                                   CreateView,
                                   DetailView,
                                   UpdateView,
                                   DeleteView,
                                   TemplateView,
-                                  FormView
+                                  FormView,
                                   )
 
 from .constants import COUNTRIES_CHOICES
-from .models import Movie, Actor, Director
+from .models import Movie, Actor, Director, Profile
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 
@@ -278,3 +278,9 @@ class ContactPage(FormView):
         # manipulate it
         # for ex, if we want to send an email response, save some data in db, send telegram message, sms
         return super().form_valid(form)
+
+
+class RegisterUser(CreateView):
+    template_name = 'register_user.html'
+    form_class = SignUpForm
+    success_url = reverse_lazy('home_page')

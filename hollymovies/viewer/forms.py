@@ -1,4 +1,21 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import Profile
+
+
+class SignUpForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        fields = ['username']
+
+    def save(self, commit=True):
+        self.instance.is_active = True
+        saved_user = super().save(commit)
+
+        saved_user.save()
+        profile = Profile(user=saved_user)
+        profile.user = saved_user
+        profile.save()
+        return saved_user
 
 
 class ContactForm(forms.Form):

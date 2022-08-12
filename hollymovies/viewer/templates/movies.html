@@ -1,6 +1,27 @@
 {%extends 'base.html'%}
 
 {%block content%}
+
+
+<!--added a simple style frm bootstrap (card), I also left the list view here as a reference.-->
+
+<div class="card" style="width: 18rem;">
+
+        {%for m in movies_data%}
+          {% if m.image %}
+            <img src="{{m.image.url}}" class="card-img-top" alt="..." height="400" width="auto">
+          {% else %}
+            <img src="https://dummyimage.com/200x300/000/fff&text=NO+IMAGE", height="500" width="auto">
+          {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{m.title}}</h5>
+          <a href="{% url 'detail_movie' m.id %}" class="btn btn-primary">{{m.title}}</a>
+        </div>
+        {%endfor%}
+
+</div>
+
+
         <ul>
           {%for m in movies_data%}
           <li><a href="{% url 'detail_movie' m.id %}"> {{m.title}}</a> - {{m.release_year}} - {{m.average_rating}}- {{m.director}} - {{m.duration}} -  {{m.language}} - {{m.trailer_link}} - {{m.genre}} - {{m.country_of_origin}}</li>
@@ -14,3 +35,5 @@
 <br>
 <a href="{% url 'directors_list' %}">Directors List</a>
 {%endblock%}
+
+

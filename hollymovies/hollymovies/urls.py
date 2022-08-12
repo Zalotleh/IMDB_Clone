@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 from viewer.views import (hello,
                           movies,
                           ListMovies,
@@ -33,7 +35,8 @@ from viewer.views import (hello,
                           CreateDirector,
                           DeleteDirector,
                           UpdateDirector,
-                          ContactPage
+                          ContactPage,
+                          RegisterUser
                           )
 
 urlpatterns = [
@@ -58,5 +61,12 @@ urlpatterns = [
     path('name/<int:pk>/update', UpdateDirector.as_view(), name='update_director'),
     path('name/<int:pk>/delete', DeleteDirector.as_view(), name='delete_director'),
     path('contact/', ContactPage.as_view(), name='contact'),
-    path('account/', include('django.contrib.auth.urls'))
+    path('account/', include('django.contrib.auth.urls')),
+    path('register_user/', RegisterUser.as_view())
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )
